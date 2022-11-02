@@ -10,13 +10,32 @@ namespace Serie_I
     {
         static bool IsPrime(int valeur)
         {
-            //TODO
-            return false;
+
+            //pour tout nombre allant de 2 à racine de valeur
+            for (int i = 2; i <= Math.Sqrt(valeur); i++)
+            {
+                // si valeur est divisible par ce nombre alors valeur n'est pas premier
+                if (valeur % i == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public static void DisplayPrimes()
         {
-            //TODO
+            for (int i = 2; i <= 100; i++)
+            {
+                //if (IsPrime(i))
+                if (IsPrime(i) == true)
+                {
+                    Console.WriteLine(i);
+                }
+                
+            }
+
         }
     }
 }
