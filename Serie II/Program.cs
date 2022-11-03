@@ -11,11 +11,13 @@ namespace Serie_II
         static void Main(string[] args)
         {
 
-            int valeur = 12;
-            int[] tab = new int[] { -3, 2, 3, 4, 5, 8, 9, 12 };
+            int valeur = 7;
+            int[] tab = new int[] { -3, 2, 3, 7, 5, 8, 9, 12 };
             Console.WriteLine($"LinearSearch : { Search.LinearSearch(tab, valeur)}");
             Array.Sort(tab);
             Console.WriteLine($"BinarySearch : {Search.BinarySearch(tab,valeur)}");
+            Console.WriteLine($"BinarySearch : {Search.BinarySearch(tab,-4)}");
+            Console.WriteLine($"BinarySearch : {Search.BinarySearch(tab,11)}");
             Search.BinarySearch(tab, valeur);
             // Keep the console window open
             Console.WriteLine("----------------------");
