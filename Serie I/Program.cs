@@ -25,6 +25,7 @@ namespace Serie_I
             PrimeNumbers.DisplayPrimes();
             Console.WriteLine($" PGCD = {Euclide.Pgcd(6, 7)}");
             Console.WriteLine($" PGCD Recur = {Euclide.PgcdRecursive(7, 9)}");
+            Pyramid.PyramidConstruction(10, true);
             // Keep the console window open
             Console.WriteLine("----------------------");
             Console.WriteLine("Press any key to exit.");
