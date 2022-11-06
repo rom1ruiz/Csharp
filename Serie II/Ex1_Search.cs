@@ -30,7 +30,7 @@ namespace Serie_II
             int mid = (tableau.Length / 2);
             int deb = 0;
             int fin = tableau.Length;
-            while (deb != fin)
+            while (deb < fin)
             {
                 if (tableau[mid] == valeur)
                 {
@@ -38,8 +38,13 @@ namespace Serie_II
                 }
                 else if (tableau[mid] > valeur)
                 {
-                    fin = tableau[mid];
-
+                    fin = mid-1;
+                    mid = ((deb + fin) / 2);
+                }
+                else if (tableau[mid] < valeur)
+                {
+                    deb = mid+1;
+                    mid = ((deb + fin) / 2);
                 }
                 
 
