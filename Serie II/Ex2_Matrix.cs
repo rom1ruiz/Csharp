@@ -10,26 +10,69 @@ namespace Serie_II
     {
         public static int[][] BuildingMatrix(int[] leftVector, int[] rightVector)
         {
-            //TODO
-            return new int[0][];
+
+            int[][] matrix =
+            {
+                leftVector,
+                rightVector
+            };
+            return matrix;
+
         }
 
         public static int[][] Addition(int[][] leftMatrix, int[][] rightMatrix)
         {
-            //TODO
-            return new int[0][];
+            int[][] addition = new int[leftMatrix.Length][];
+            for (int i = 0; i < addition.Length; i++)
+            {
+                addition[i] = new int[leftMatrix[i].Length];
+
+                for (int j = 0; j < addition[i].Length; j++)
+                {
+                    addition[i][j] = leftMatrix[i][j] + rightMatrix[i][j];
+                }
+            }
+            return addition;
+
         }
 
         public static int[][] Substraction(int[][] leftMatrix, int[][] rightMatrix)
         {
-            //TODO
-            return new int[0][];
+            int[][] soustraction = new int[leftMatrix.Length][];
+            for (int i = 0; i < soustraction.Length; i++)
+            {
+                soustraction[i] = new int[leftMatrix[i].Length];
+
+                for (int j = 0; j < soustraction[i].Length; j++)
+                {
+                    soustraction[i][j] = leftMatrix[i][j] - rightMatrix[i][j];
+                }
+            }
+            return soustraction;
         }
 
         public static int[][] Multiplication(int[][] leftMatrix, int[][] rightMatrix)
         {
-            //TODO
-            return new int[0][];
+            int[][] multiplication = new int[leftMatrix.Length][];
+            if (leftMatrix[0].Length == rightMatrix.Length)
+            {
+                for (int i = 0; i < multiplication.Length; i++)
+                {
+                    multiplication[i] = new int[leftMatrix[i].Length];
+
+                    for (int j = 0; j < multiplication[i].Length; j++)
+                    {
+                        for (int k = 0; k < leftMatrix[0].Length; k++)
+                        {
+                            multiplication[i][j] =+ leftMatrix[i][k] * leftMatrix[i][k];
+
+                        }
+                    }
+                }
+
+            }
+            return multiplication;
+
         }
 
         public static void DisplayMatrix(int[][] matrix)
