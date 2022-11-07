@@ -17,56 +17,15 @@ namespace Serie_III
             //string currentpath = Directory.GetCurrentDirectory();
             //string inputfilepath = (currentpath + @"\entrée.txt");
             //string outputfilepath = (currentpath + @"\sortie.txt");
-            //Dictionary<string, List<string>> dico = new Dictionary<string, List<string>>();
-            //List<string> moyennes = new List<string>();
-
-
-            //string ligne;
-            //int cptLigne = 0;
-
-            //using (StreamReader reader = new StreamReader(inputfilepath))
-            //{
-            //    while (!reader.EndOfStream)
-            //    {
-            //        ligne = reader.ReadLine();
-            //        string[] split = ligne.Split(';');
-            //        string matiere = split[1];
-            //        string note = split[2];
-            //        if (!dico.ContainsKey(matiere))
-            //        {
-            //            dico.Add(matiere, new List<string>());
-            //        }
-            //        dico[matiere].Add(note);
-            //    }
-            //    Console.WriteLine($"Nombre de ligne: {cptLigne}");
-            //}
-
-            //using (StreamWriter writer = new StreamWriter(outputfilepath))
-            //{
-            //    foreach (KeyValuePair<string, List<string>> item in dico)
-            //    {
-            //        double cpt = 0;
-            //        float moyenne = 0;
-            //        Console.WriteLine(item.Key);
-
-            //        //foreach (string s in item.Value)
-            //        foreach (string s in dico[item.Key])
-            //        {
-            //            string r = s.Replace('.', ',');
-            //            moyenne += float.Parse(r);
-            //            cpt++;
-            //        }
-            //        Console.WriteLine(cpt);
-            //        Console.WriteLine(moyenne / cpt);
-            //        writer.WriteLine($"{item.Key};{moyenne / cpt}");
-            //    }
-            //}
-
+            //ClassCouncil.SchoolMeans(inputfilepath, outputfilepath);
 
             //SortingPerformance.UseQuickSort(array);
             //SortingPerformance.UseInsertionSort(array);
-            List<int> size = new List<int> { 10000, 20000, 50000 };
-            SortingPerformance.PerformancesTest(size, 10);
+
+
+            List<int> size = new List<int> { 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 300000};
+            //SortingPerformance.PerformancesTest(size, 10);
+            SortingPerformance.DisplayPerformances(size,50);
 
 
             // Keep the console window open

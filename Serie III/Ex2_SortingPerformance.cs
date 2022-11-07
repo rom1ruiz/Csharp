@@ -32,6 +32,22 @@ namespace Serie_III
         public static void DisplayPerformances(List<int> sizes, int count)
         {
             //TODO
+            Console.WriteLine("PerformanceTest en cours veuillez patienter...");
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            List<SortData> datas = PerformancesTest(sizes, count);
+            sw.Stop();
+            Console.WriteLine($"Temps: { sw.ElapsedMilliseconds}");
+            Console.Clear();
+            Console.WriteLine("      n ; MeanInsertion ; StdInsertion ; MeanQuick ; StdQuick");
+            for (int i = 0; i < sizes.Count; i++)
+            {
+                Console.WriteLine($"{sizes[i].ToString().PadLeft(7, ' ')} ; {datas[i].InsertionMean.ToString().PadLeft(10, ' ')} ms ; {datas[i].InsertionStd.ToString().PadLeft(9, ' ')} ms ; {datas[i].QuickMean.ToString().PadLeft(6, ' ')} ms ; {datas[i].QuickStd.ToString().PadLeft(5, ' ')} ms");
+            }
+
+
+
+
         }
 
         public static List<SortData> PerformancesTest(List<int> sizes, int count)
@@ -48,10 +64,10 @@ namespace Serie_III
 
         public static SortData PerformanceTest(int size, int count)
         {
-            double sommeQuick = 0;
-            double sommeInsert = 0;
-            double sommeSqrtQuick = 0;
-            double sommeSqrtInsert = 0;
+            long sommeQuick = 0;
+            long sommeInsert = 0;
+            long sommeSqrtQuick = 0;
+            long sommeSqrtInsert = 0;
             SortData result = new SortData();
             for (int i = 0; i < count; i++)
             {
@@ -61,10 +77,10 @@ namespace Serie_III
             }
             result.QuickMean = (int)sommeQuick / count;
             result.InsertionMean = (int)sommeInsert / count;
-            sommeSqrtQuick = Math.Pow(sommeQuick - result.QuickMean, 2);
+            sommeSqrtQuick = (long)Math.Pow(sommeQuick - result.QuickMean, 2);
             result.QuickStd = (int)sommeSqrtQuick / count;
-            sommeSqrtInsert = Math.Pow(sommeInsert - result.InsertionMean, 2);
-            result.QuickStd = (int)sommeSqrtInsert / count;
+            sommeSqrtInsert = (long)Math.Pow(sommeInsert - result.InsertionMean, 2);
+            result.InsertionStd = (int)sommeSqrtInsert / count;
 
             return result;
         }
