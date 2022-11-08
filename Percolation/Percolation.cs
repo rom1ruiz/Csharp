@@ -31,7 +31,7 @@ namespace Percolation
         //Possible passage en public
         private bool IsFull(int i, int j)
         {
-
+            
             return _full[i, j];
         }
 
@@ -82,7 +82,7 @@ namespace Percolation
             {
                 FillNeighbors(neighborList);
             }
-            if (IsFull(_size, j))
+            if (IsFull(_size-1, j))
             {
                 _percolate = true;
             }

@@ -30,7 +30,8 @@ namespace Percolation
             PclData data = new PclData();
             double isPercolate = PercolationValue(size);
             //data.Mean = ;
-            //data.Fraction = ; 
+            //data.Fraction = ;
+            //data.StandardDeviation = ;
             return new PclData();
         }
 
