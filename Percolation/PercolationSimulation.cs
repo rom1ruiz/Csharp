@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,12 +27,32 @@ namespace Percolation
     {
         public PclData MeanPercolationValue(int size, int t)
         {
+            PclData data = new PclData();
+            double isPercolate = PercolationValue(size);
+            //data.Mean = ;
+            //data.Fraction = ; 
             return new PclData();
         }
 
         public double PercolationValue(int size)
         {
-            return 0;
+            Random rd = new Random();
+            Percolation p = new Percolation(size);
+            double isPercolate;
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            do
+            {
+                //Ouverture d'une case aléatoire
+                int i = rd.Next(0, size);
+                int j = rd.Next(0, size);
+                p.Open(i, j);
+                
+
+            } while (p.Percolate());
+            sw.Stop();
+            isPercolate = sw.ElapsedMilliseconds;
+            return isPercolate;
         }
     }
 }
