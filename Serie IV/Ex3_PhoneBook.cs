@@ -45,32 +45,41 @@ namespace Serie_IV
 
         public void PhoneContact(string phoneNumber)
         {
-
             if (_contacts.ContainsKey(phoneNumber))
             {
                 Console.WriteLine($"{phoneNumber} : {_contacts[phoneNumber]}");
             }
+            throw new ArgumentException("Le numéro n'est pas valide"); 
 
         }
 
         public bool AddPhoneNumber(string phoneNumber, string name)
         {
-            if (IsValidPhoneNumber(phoneNumber))
+            if (IsValidPhoneNumber(phoneNumber) && !ContainsPhoneContact(phoneNumber))
             {
                 _contacts.Add(phoneNumber, name);
+                return true;
             }
             return false;
         }
 
         public bool DeletePhoneNumber(string phoneNumber)
         {
-            _contacts.Remove(phoneNumber);
+            if (ContainsPhoneContact(phoneNumber))
+            {
+                _contacts.Remove(phoneNumber);
+                return true;
+            }
+            
             return false;
         }
 
         public void DisplayPhoneBook()
         {
-            //TODO
+            foreach (KeyValuePair <string, string> item in _contacts){
+                Console.WriteLine($"{item.Key} : {item.Value}");
+            }
+            
         }
     }
 }
