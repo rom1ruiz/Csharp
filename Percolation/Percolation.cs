@@ -27,12 +27,13 @@ namespace Percolation
 
         public bool IsOpen(int i, int j)
         {
-            return false;
+            
+            return _open[i, j];
         }
-
+        //Possible passage en public
         private bool IsFull(int i, int j)
         {
-            return false;
+            return _full[i,j];
         }
 
         public bool Percolate()
