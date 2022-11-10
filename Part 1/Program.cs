@@ -17,28 +17,14 @@ namespace Part_1
         {
             #region Initialize
             //Récupération du chemin d'éxecution
-            string currentpath = Directory.GetCurrentDirectory();
-
-            //Création du chemin d'accès vers le fichier accounts
-            string accountsfilepath = (currentpath + @"\accounts.csv");
-
-            //Création du chemin d'accès vers le fichier transactions
-            string transactionsfilepath = (currentpath + @"\transactions.csv");
-
-            //Création du chemin d'accès vers le fichier de sortie
-            string sortiefilepath = (currentpath + @"\sortie.csv");
             string path = Directory.GetCurrentDirectory();
-            for (int i = 1; i < 7; i++)
-            {
-                // Entrées
-                string mngrPath = path + $@"\Gestionnaires_{i}.txt";
-                string oprtPath = path + $@"\Comptes_{i}.txt";
-                string trxnPath = path + $@"\Transactions_{i}.txt";
-                // Sorties
-                string sttsOprtPath = path + $@"\StatutOpe_{i}.txt";
-                string sttsTrxnPath = path + $@"\StatutTra_{i}.txt";
-                string mtrlPath = path + $@"\Metrologie_{i}.txt";
-            }
+            //Création du chemin d'accès vers le fichier accounts
+            string acctPath = path + @"\Comptes_1.txt";
+            //Création du chemin d'accès vers le fichier transactions
+            string trxnPath = path + @"\Transactions_1.txt";
+            //Création du chemin d'accès vers le fichier de sortie
+            string sttsPath = path + @"\Statut_1.txt";
+
             //Création d'une liste de comptes
             List<Account> accounts = new List<Account>();
 
@@ -90,15 +76,18 @@ namespace Part_1
 
             #region Treaments_files
             //Lecture du fichier accounts
-            using (StreamReader sr = new StreamReader(accountsfilepath))
+            using (StreamReader sr = new StreamReader(acctPath))
             {
                 while (!sr.EndOfStream)
                 {
                     var s = sr.ReadLine();
                     string[] split = s.Split(';');
                     int.TryParse(split[0], out account);
-                    double.TryParse(split[1], out intialBalance);
-                    accounts.Add(new Account(account, intialBalance));
+                    double.TryParse(split[1].Replace('.', ','), out intialBalance);
+                    if (intialBalance >= 0)
+                    {
+                        accounts.Add(new Account(account, intialBalance));
+                    }
                 }
                 for (int i = 0; i < accounts.Count; i++)
                 {
@@ -106,7 +95,7 @@ namespace Part_1
                 }
             }
             //Lecture du fichier transactions
-            using (StreamReader sr = new StreamReader(transactionsfilepath))
+            using (StreamReader sr = new StreamReader(trxnPath))
             {
                 while (!sr.EndOfStream)
                 {
@@ -121,7 +110,7 @@ namespace Part_1
                     transactions.Add(new Transaction(id, amount, sender, receiver));
                 }
             }
-            using (StreamWriter writer = new StreamWriter(sortiefilepath))
+            using (StreamWriter writer = new StreamWriter(sttsPath))
             {
                 for (int i = 0; i < transactions.Count; i++)
                 {
