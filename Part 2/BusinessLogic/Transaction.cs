@@ -11,20 +11,22 @@ namespace Part_2
     public class Transaction
     {
         private int id;
+        private DateTime date;
         private double amount;
         private int sender;
         private int receiver;
 
 
-        public int Id { get => id; }
+        public int Id => id;
+        public DateTime Date => date;
         public double Amount { get => amount; set => amount = value; }
-        public int Sender { get => sender; }
-        public int Receiver { get => receiver; }
+        public int Sender => sender;
+        public int Receiver => receiver;
 
-
-        public Transaction(int id, double amount , int sender, int receiver)
+        public Transaction(int id, DateTime date, double amount , int sender, int receiver)
         {
             this.id = id;
+            this.date = date;
             this.amount = amount;
             this.sender = sender;
             this.receiver = receiver;
