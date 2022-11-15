@@ -78,11 +78,11 @@ namespace Part_2
 
                 }
 
-                // Keep the console window open
-                Console.WriteLine("----------------------");
-                Console.WriteLine("Press any key to exit.");
-                Console.ReadKey();
             }
+            // Keep the console window open
+            Console.WriteLine("----------------------");
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
     }
 }

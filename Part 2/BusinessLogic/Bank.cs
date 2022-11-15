@@ -155,7 +155,7 @@ namespace Part_2
         }
         public bool CloseAccount(Operation operation)
         {
-            if (_managers.ContainsKey(operation.Input) && AccountExists(operation.Id) && _accounts[operation.Id].IdMngr == operation.Output)
+            if (_managers.ContainsKey(operation.Output) && AccountExists(operation.Id) && _accounts[operation.Id].IdMngr == operation.Output)
             {
                 return _accounts.Remove(operation.Id);
             }
