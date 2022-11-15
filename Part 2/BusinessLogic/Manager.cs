@@ -8,43 +8,23 @@ namespace Part_2
 {
     internal class Manager
     {
-        readonly int id_mngr;
-        private string type;
-        private int number_trxn;
-        private int number_done;
-        private List<Account> _accounts;
+        private int _id;
+        private string _type;
+        private int _number_trxn;
 
-        public int Id => id_mngr;
-        public string Type => type; 
-        public int Number => number_trxn;
-        public int Number_done { get => number_done; set => number_done = value; }
-        public List<Account> Accounts { get => _accounts; set => _accounts = value; }
+        public int Id => _id;
+        public string Type => _type;
+        public int Number => _number_trxn;
+        public double SumFees {get; set;}
 
         public Manager(int id, string type, int number)
         {
-            this.id_mngr = id;
-            this.type = type;
-            number_trxn = number;
-            _accounts = new List<Account>();
+            _id = id;
+            _type = type;
+            _number_trxn = number;
         }
 
-        public double CalculFraisGestion(double amount,string type)
-        {
-            if(amount > 0)
-            {
-                switch (type)
-                {
-                    case "Particulier":
-                        return amount;
-                    case "Entreprise":
-                        return amount;
-                    default:
-                        break;
-                }
-                
-            }
-            return -1;
-        }
+
 
 
 
