@@ -307,29 +307,29 @@ namespace Part_2
 
         }
 
-        public void WriteOperation(bool b, StreamWriter writerOpe)
+        public void WriteOperation(bool b,int id, StreamWriter writerOpe)
         {
             if (b)
             {
-                writerOpe.WriteLine("OK");
+                writerOpe.WriteLine($"{id};OK");
 
             }
             else
             {
-                writerOpe.WriteLine("KO");
+                writerOpe.WriteLine($"{id};KO");
             }
         }
 
-        public void WriteTransaction(bool b, StreamWriter writerTrxn)
+        public void WriteTransaction(bool b,int id, StreamWriter writerTrxn)
         {
             if (b)
             {
-                writerTrxn.WriteLine("OK");
+                writerTrxn.WriteLine($"{id};OK");
                 numberOfOK++;
             }
             else
             {
-                writerTrxn.WriteLine("KO");
+                writerTrxn.WriteLine($"{id};KO");
                 numberOfKO++;
             }
         }

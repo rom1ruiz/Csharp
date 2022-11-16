@@ -16,7 +16,7 @@ namespace Part_2
 
             //Récupération du chemin d'éxecution
             string path = Directory.GetCurrentDirectory();
-            for (int p = 0; p < 1; p++)
+            for (int p = 0; p < 7; p++)
             {
 
                 #region Initialize
@@ -50,13 +50,13 @@ namespace Part_2
                         if (operations[iOp].Date <= transactions[iTr].Date)
                         {
                             //On écrit dans le fichier Operations
-                            b.WriteOperation(b.MakeOperation(iOp, operations), writerOpe);
+                            b.WriteOperation(b.MakeOperation(iOp, operations), operations[iOp].Id,  writerOpe);
                             iOp++;
                         }
                         else
                         {
                             //On écrit dans le fichier Transactions
-                            b.WriteTransaction(b.MakeTransaction(iTr, transactions), writerTrxn);
+                            b.WriteTransaction(b.MakeTransaction(iTr, transactions), transactions[iTr].Id,  writerTrxn);
                             iTr++;
                         }
                     }
