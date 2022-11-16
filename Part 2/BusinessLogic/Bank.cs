@@ -307,7 +307,7 @@ namespace Part_2
 
         }
 
-        public void WriteOperation(bool b,int id, StreamWriter writerOpe)
+        public void WriteOperation(bool b, int id, StreamWriter writerOpe)
         {
             if (b)
             {
@@ -320,7 +320,7 @@ namespace Part_2
             }
         }
 
-        public void WriteTransaction(bool b,int id, StreamWriter writerTrxn)
+        public void WriteTransaction(bool b, int id, StreamWriter writerTrxn)
         {
             if (b)
             {
@@ -336,16 +336,16 @@ namespace Part_2
 
         public void WriteMetrologie(StreamWriter writerMetro)
         {
-            writerMetro.WriteLine($"Statistiques: \n" +
-                                  $"Nombre de comptes : {numberOfCreated} \n" +
-                                  $"Nombre de transactions : {numberOfTransaction} \n" +
-                                  $"Nombre de réussite : {numberOfOK} \n" +
-                                  $"Nombre d'échecs : {numberOfKO} \n" +
-                                  $"Montant total : {sumOfOK} euros \n \n" +
+            writerMetro.WriteLine($"Statistiques :\n" +
+                                  $"Nombre de comptes : {numberOfCreated}\n" +
+                                  $"Nombre de transactions : {numberOfTransaction}\n" +
+                                  $"Nombre de réussites : {numberOfOK}\n" +
+                                  $"Nombre d'échecs : {numberOfKO}\n" +
+                                  $"Montant total  des réussites : {sumOfOK:C2} euros\n\n" +
                                   $"Frais de gestion :");
             foreach (KeyValuePair<int, Manager> m in _managers)
             {
-                writerMetro.WriteLine($"{m.Value.Id} : {m.Value.SumFees} euros");
+                writerMetro.WriteLine($"{m.Value.Id:C2} : {m.Value.SumFees:C2} euros");
             }
         }
 

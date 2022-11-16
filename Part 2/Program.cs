@@ -16,7 +16,7 @@ namespace Part_2
 
             //Récupération du chemin d'éxecution
             string path = Directory.GetCurrentDirectory();
-            for (int p = 0; p < 7; p++)
+            for (int p = 1; p < 7; p++)
             {
 
                 #region Initialize
