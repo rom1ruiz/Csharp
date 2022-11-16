@@ -71,7 +71,7 @@ namespace Part_2
                     while (transactions.Count > iTr)
                     {
                         //On écrit dans le fichier Transactions
-                        b.WriteTransaction(b.MakeTransaction(iTr, transactions), operations[iOp].Id, writerTrxn);
+                        b.WriteTransaction(b.MakeTransaction(iTr, transactions), transactions[iTr].Id, writerTrxn);
                         iTr++;
                     }
                     b.WriteMetrologie(writerMetro);
