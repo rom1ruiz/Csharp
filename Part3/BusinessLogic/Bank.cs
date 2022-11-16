@@ -1,5 +1,4 @@
-﻿using Part_2;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Part_2
+namespace Part_3
 {
     internal class Bank
     {
@@ -246,18 +245,39 @@ namespace Part_2
             if (transactions[indice].Sender != 0 && transactions[indice].Receiver == 0)
             {
                 trxnOk = MakeWithdrawal(transactions[indice]);
+                //int accNumber = transactions[indice].Sender;
+                //Account account = _accounts[accNumber];
+                //int idMngr = account.IdMngr;
+                //int numberOfTrxn = _managers[idMngr].Number;
+                //_accounts[WhereIsThisAccount(accNumber, _accounts)].Addtransaction(transactions[indice], numberOfTrxn);
+
                 numberOfTransaction++;
             }
             //Deposit
             else if (transactions[indice].Sender == 0 && transactions[indice].Receiver != 0)
             {
                 trxnOk = MakeDeposit(transactions[indice]);
+                //int accNumber = transactions[indice].Receiver;
+                //Account account = _accounts[accNumber];
+                //int idMngr = account.IdMngr;
+                //int numberOfTrxn = _managers[idMngr].Number;
+                //_accounts[WhereIsThisAccount(accNumber, _accounts)].Addtransaction(transactions[indice], numberOfTrxn);
                 numberOfTransaction++;
             }
             //Transfer
             else if (transactions[indice].Sender != 0 && transactions[indice].Receiver != 0)
             {
                 trxnOk = MakeTranfer(transactions[indice]);
+                //int accSender = transactions[indice].Sender;
+                //Account accountS = _accounts[accSender];
+                //int idMngrS = accountS.IdMngr;
+                //int numberOfTrxnS = _managers[idMngrS].Number;
+                //_accounts[WhereIsThisAccount(accSender, _accounts)].Addtransaction(transactions[indice], numberOfTrxnS);
+                //int accReceiver = transactions[indice].Receiver;
+                //Account accountR = _accounts[accReceiver];
+                //int idMngrR = accountR.IdMngr;
+                //int numberOfTrxnR = _managers[idMngrR].Number;
+                //_accounts[WhereIsThisAccount(accReceiver, _accounts)].Addtransaction(transactions[indice], numberOfTrxnR);
                 numberOfTransaction++;
             }
             return trxnOk;
