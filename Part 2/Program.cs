@@ -64,14 +64,14 @@ namespace Part_2
                     while (operations.Count > iOp)
                     {
                         //On écrit dans le fichier Operations
-                        b.WriteOperation(b.MakeOperation(iOp, operations), writerOpe);
+                        b.WriteOperation(b.MakeOperation(iOp,operations), operations[iOp].Id, writerOpe);
                         iOp++;
                     }
                     //SI il reste des transactions
                     while (transactions.Count > iTr)
                     {
                         //On écrit dans le fichier Transactions
-                        b.WriteTransaction(b.MakeTransaction(iTr, transactions), writerTrxn);
+                        b.WriteTransaction(b.MakeTransaction(iTr, transactions), operations[iOp].Id, writerTrxn);
                         iTr++;
                     }
                     b.WriteMetrologie(writerMetro);
