@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Part_3
+namespace Part3.BusinessLogic
 {
     internal class Bank
     {
@@ -40,6 +40,7 @@ namespace Part_3
 
             _managers = ParseDataMngr(dataMngr);
         }
+
         public Dictionary<int, Manager> ParseDataMngr(List<string> dataMngr)
         {
             Dictionary<int, Manager> managers = new Dictionary<int, Manager>();
@@ -48,7 +49,6 @@ namespace Part_3
             int number_trxn;
             foreach (string line in dataMngr)
             {
-
                 //Split de la ligne lu en tableau de string
                 string[] split = line.Split(';');
                 int.TryParse(split[0], out id);
@@ -62,6 +62,7 @@ namespace Part_3
 
             return managers;
         }
+
         public List<Operation> ReadOperationsFile(string path)
         {
             List<string> dataAcc = new List<string>();
@@ -79,30 +80,36 @@ namespace Part_3
 
             return ParseDataOperations(dataAcc);
         }
+
         public List<Operation> ParseDataOperations(List<string> dataAcc)
         {
             List<Operation> operations = new List<Operation>();
             int account;
+            string type;
             DateTime date;
             double initialBalance;
+            int age;
             int input;
             int output;
             foreach (string line in dataAcc)
             {
                 string[] split = line.Split(';');
                 int.TryParse(split[0], out account);
+                type = split[1];
                 DateTime.TryParse(split[1], out date);
                 double.TryParse(split[2].Replace('.', ','), out initialBalance);
-                int.TryParse(split[3], out input);
-                int.TryParse(split[4], out output);
+                int.TryParse(split[3], out age);
+                int.TryParse(split[4], out input);
+                int.TryParse(split[5], out output);
                 if (initialBalance >= 0)
                 {
-                    operations.Add(new Operation(account, date, initialBalance, input, output));
+                    operations.Add(new Operation(account, type, date, initialBalance, age, input, output));
                 }
             }
 
             return operations;
         }
+
         public List<Transaction> ReadTransactionsFile(string path)
         {
             List<string> dataTransactions = new List<string>();
@@ -120,6 +127,7 @@ namespace Part_3
 
             return ParseDataTransactions(dataTransactions);
         }
+
         public List<Transaction> ParseDataTransactions(List<string> dataTransactions)
         {
             List<Transaction> transactions = new List<Transaction>();
@@ -142,34 +150,57 @@ namespace Part_3
             return transactions;
         }
 
+
+        //OPERARATIONS
         public bool OpenAccount(Operation operation)
         {
             if (_managers.ContainsKey(operation.Input) && !AccountExists(operation.Id) && operation.Balance >= 0)
             {
-                _accounts.Add(operation.Id, new Account(operation.Id, operation.Date, operation.Balance, operation.Input));
+                switch (operation.Type)
+                {
+                    case "J":
+                    case "L":
+                    case "T":
+                    case "C":
+                    default:
+                        break;
+                }
+
+                _accounts.Add(operation.Id,
+                    new Account(operation.Id, operation.Type, operation.Date, operation.Balance, operation.Age,
+                        operation.Input));
                 numberOfCreated++;
                 return true;
             }
+
             return false;
         }
+
         public bool CloseAccount(Operation operation)
         {
-            if (_managers.ContainsKey(operation.Output) && AccountExists(operation.Id) && _accounts[operation.Id].IdMngr == operation.Output)
+            if (_managers.ContainsKey(operation.Output) && AccountExists(operation.Id) &&
+                _accounts[operation.Id].IdMngr == operation.Output)
             {
                 return _accounts.Remove(operation.Id);
             }
+
             return false;
         }
+
         public bool TransferAccount(Operation operation)
         {
-            if (_managers.ContainsKey(operation.Input) && _managers.ContainsKey(operation.Output) && AccountExists(operation.Id) && _accounts[operation.Id].IdMngr == operation.Input)
+            if (_managers.ContainsKey(operation.Input) && _managers.ContainsKey(operation.Output) &&
+                AccountExists(operation.Id) && _accounts[operation.Id].IdMngr == operation.Input)
             {
                 _accounts[operation.Id].IdMngr = operation.Output;
                 return true;
             }
+
             return false;
         }
 
+
+        //TRANSACTIONS
         public bool MakeDeposit(Transaction transaction)
         {
             if (IsAmountValid(transaction.Amount) && AccountExists(transaction.Receiver))
@@ -178,21 +209,26 @@ namespace Part_3
                 sumOfOK += transaction.Amount;
                 return true;
             }
+
             return false;
         }
+
         public bool MakeWithdrawal(Transaction transaction)
         {
             if (IsAmountValid(transaction.Amount) && AccountExists(transaction.Sender)
-                && transaction.Amount < _accounts[transaction.Sender].Balance
-                && CheckWeeklyTransactions(transaction) && CheckLastTransactions(transaction))
+                                                  && transaction.Amount < _accounts[transaction.Sender].Balance
+                                                  && CheckWeeklyTransactions(transaction) &&
+                                                  CheckLastTransactions(transaction))
             {
                 _accounts[transaction.Sender].Balance -= transaction.Amount;
                 _accounts[transaction.Sender].AddTransaction(transaction);
                 sumOfOK += transaction.Amount;
                 return true;
             }
+
             return false;
         }
+
         internal bool MakeTranfer(Transaction transaction)
         {
             if (IsAmountValid(transaction.Amount)
@@ -204,18 +240,22 @@ namespace Part_3
                 double frais = 0;
                 if (_accounts[transaction.Sender].IdMngr != _accounts[transaction.Receiver].IdMngr)
                 {
-                    frais = CalculFraisGestion(transaction.Amount, _managers[_accounts[transaction.Sender].IdMngr].Type);
+                    frais = CalculFraisGestion(transaction.Amount,
+                        _managers[_accounts[transaction.Sender].IdMngr].Type);
                     _managers[_accounts[transaction.Sender].IdMngr].SumFees += frais;
                 }
+
                 _accounts[transaction.Sender].Balance -= (transaction.Amount + frais);
                 _accounts[transaction.Sender].AddTransaction(transaction);
                 _accounts[transaction.Receiver].Balance += transaction.Amount;
                 sumOfOK += transaction.Amount;
                 return true;
             }
+
             return false;
         }
 
+        //APPLICATIF
         public bool MakeOperation(int indice, List<Operation> operations)
         {
             bool opOk = false;
@@ -223,7 +263,6 @@ namespace Part_3
             if (operations[indice].Input != 0 && operations[indice].Output == 0)
             {
                 opOk = OpenAccount(operations[indice]);
-
             }
             //Close
             else if (operations[indice].Input == 0 && operations[indice].Output != 0)
@@ -235,6 +274,7 @@ namespace Part_3
             {
                 opOk = TransferAccount(operations[indice]);
             }
+
             return opOk;
         }
 
@@ -280,38 +320,17 @@ namespace Part_3
                 //_accounts[WhereIsThisAccount(accReceiver, _accounts)].Addtransaction(transactions[indice], numberOfTrxnR);
                 numberOfTransaction++;
             }
+
             return trxnOk;
         }
 
-        public double CalculFraisGestion(double amount, string type)
-        {
-            double frais = 0;
-            if (IsAmountValid(amount))
-            {
-                switch (type)
-                {
-                    case "Particulier":
-                        frais = amount * 0.01;
-                        return frais;
-                    case "Entreprise":
-                        frais = 10;
-                        return frais;
-                    default:
-                        break;
-                }
 
-            }
-            return -1;
-
-
-        }
-
+        //ECRITURE
         public void WriteOperation(bool b, int id, StreamWriter writerOpe)
         {
             if (b)
             {
                 writerOpe.WriteLine($"{id};OK");
-
             }
             else
             {
@@ -348,6 +367,8 @@ namespace Part_3
             }
         }
 
+
+        //VERIFICATION 
         private static bool IsAmountValid(double amount)
         {
             return amount > 0;
@@ -367,6 +388,7 @@ namespace Part_3
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -379,8 +401,8 @@ namespace Part_3
                     return true;
                 }
             }
-            return false;
 
+            return false;
         }
 
         public bool IsThisADuplicateOper(int id, List<int> operations)
@@ -392,6 +414,7 @@ namespace Part_3
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -404,6 +427,7 @@ namespace Part_3
                     return n;
                 }
             }
+
             return -1;
         }
 
@@ -416,6 +440,7 @@ namespace Part_3
                     return n;
                 }
             }
+
             return -1;
         }
 
@@ -434,8 +459,10 @@ namespace Part_3
                 else
                     break;
             }
+
             return total + t.Amount <= 2000;
         }
+
         private bool CheckLastTransactions(Transaction t)
         {
             int nbr = _managers[_accounts[t.Sender].IdMngr].Number;
@@ -444,10 +471,38 @@ namespace Part_3
             for (int i = transactions.Count - 1; i >= 0 && i >= transactions.Count - nbr; i--)
             {
                 total += transactions[i].Amount;
-
             }
-            return total + t.Amount <= 1000;
 
+            return total + t.Amount <= 1000;
+        }
+
+        // 
+        public double CalculFraisGestion(double amount, string type)
+        {
+            double frais = 0;
+            if (IsAmountValid(amount))
+            {
+                switch (type)
+                {
+                    case "Particulier":
+                        frais = amount * 0.01;
+                        return frais;
+                    case "Entreprise":
+                        frais = 10;
+                        return frais;
+                    default:
+                        break;
+                }
+            }
+
+            return -1;
+        }
+
+        private double CalculInteret(Account account)
+        {
+            double interet = 0;
+
+            return interet;
         }
     }
 }

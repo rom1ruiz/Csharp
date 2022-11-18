@@ -5,7 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Part_3
+namespace Part3.BusinessLogic
 {
     public class Transaction
     {

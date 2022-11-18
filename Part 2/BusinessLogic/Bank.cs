@@ -324,7 +324,7 @@ namespace Part_2
                                   $"Frais de gestion :");
             foreach (KeyValuePair<int, Manager> m in _managers)
             {
-                writerMetro.WriteLine($"{m.Value.Id:C2} : {m.Value.SumFees:C2} euros");
+                writerMetro.WriteLine($"{m.Value.Id} : {m.Value.SumFees:C2} euros");
             }
         }
 

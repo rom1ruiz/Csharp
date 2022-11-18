@@ -43,6 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\Account.cs" />
+    <Compile Include="BusinessLogic\Bank.cs" />
+    <Compile Include="Types\Courant.cs" />
+    <Compile Include="Types\Jeune.cs" />
+    <Compile Include="Types\Livret.cs" />
+    <Compile Include="BusinessLogic\Manager.cs" />
+    <Compile Include="BusinessLogic\Operation.cs" />
+    <Compile Include="Types\Terme.cs" />
+    <Compile Include="BusinessLogic\Transaction.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

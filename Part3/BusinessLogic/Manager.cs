@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Part_3
+namespace Part3.BusinessLogic
 {
     internal class Manager
     {

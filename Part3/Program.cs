@@ -6,8 +6,9 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using Part3.BusinessLogic;
 
-namespace Part_3
+namespace Part3
 {
     internal class Program
     {
