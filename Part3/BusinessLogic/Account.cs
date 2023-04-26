@@ -15,7 +15,8 @@ namespace Part3.BusinessLogic
         private DateTime _dateOuv;
         private DateTime _dateClo;
         private double _balance;
-        private const int _maxWithdraw = 1000;
+        private double _interest;
+        public int maxWithdraw = 1000;
         private List<Transaction> _transactions;
 
         public int AccountNumber => _accountNumber;
@@ -23,10 +24,11 @@ namespace Part3.BusinessLogic
         public DateTime DateClo { get => _dateClo; set => _dateClo = value; }
         public double Balance { get => _balance; set => _balance = value; }
         public int Age { get => _age; set => _age = value; }
-        public static int MaxWithdraw => _maxWithdraw;
+        
         public int IdMngr { get => idMngr; set => idMngr = value; }
         public List<Transaction> Transactions { get => _transactions; set => _transactions = value; }
         public string Type { get => _type; set => _type = value; }
+        public double Interest { get => _interest; set => _interest = value; }
 
         public Account(int accountNumber, string type, DateTime date, double balance, int age, int idMngr)
         {

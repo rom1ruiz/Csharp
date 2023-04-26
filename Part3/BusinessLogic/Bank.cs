@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Part3.Types;
 
 namespace Part3.BusinessLogic
 {
@@ -96,11 +97,11 @@ namespace Part3.BusinessLogic
                 string[] split = line.Split(';');
                 int.TryParse(split[0], out account);
                 type = split[1];
-                DateTime.TryParse(split[1], out date);
-                double.TryParse(split[2].Replace('.', ','), out initialBalance);
-                int.TryParse(split[3], out age);
-                int.TryParse(split[4], out input);
-                int.TryParse(split[5], out output);
+                DateTime.TryParse(split[2], out date);
+                double.TryParse(split[3].Replace('.', ','), out initialBalance);
+                int.TryParse(split[4], out age);
+                int.TryParse(split[5], out input);
+                int.TryParse(split[6], out output);
                 if (initialBalance >= 0)
                 {
                     operations.Add(new Operation(account, type, date, initialBalance, age, input, output));
@@ -151,28 +152,46 @@ namespace Part3.BusinessLogic
         }
 
 
-        //OPERARATIONS
+        //OPERATIONS
         public bool OpenAccount(Operation operation)
         {
             if (_managers.ContainsKey(operation.Input) && !AccountExists(operation.Id) && operation.Balance >= 0)
             {
-                switch (operation.Type)
+
+                if (operation.Type != null)
                 {
-                    case "J":
-                    case "L":
-                    case "T":
-                    case "C":
-                    default:
-                        break;
+                    //Initialize the balance for a "Jeune" Account type and it has to be Age * 10
+                    // and verify if the type condition are fulfilled
+                    if (operation.Age >= 8 && operation.Age < 17 && operation.Type == "J")
+                    {
+                        _accounts.Add(operation.Id, new Jeune(operation.Id, operation.Type, operation.Date, operation.Balance, operation.Age, operation.Input));
+                        numberOfCreated++;
+                    }
+                    //Adding a "Livret" account
+                    else if (operation.Type == "L")
+                    {
+                        _accounts.Add(operation.Id, new Livret(operation.Id, operation.Type, operation.Date, operation.Balance, operation.Age, operation.Input));
+                        numberOfCreated++;
+                    }
+                    //Adding a "Courant" account
+                    else if (operation.Type == "C")
+                    {
+                        _accounts.Add(operation.Id, new Courant(operation.Id, operation.Type, operation.Date, operation.Balance, operation.Age, operation.Input));
+                        numberOfCreated++;
+                    }
+                    //Adding a "Terme" account
+                    else if (operation.Type == "T" && operation.Balance >= 200)
+                    {
+                        _accounts.Add(operation.Id, new Terme(operation.Id, operation.Type, operation.Date, operation.Balance, operation.Age, operation.Input));
+                        numberOfCreated++;
+                    }
+                    //If it doesnt match with any allowed values
+                    else
+                    {
+                        return false;
+                    }
                 }
-
-                _accounts.Add(operation.Id,
-                    new Account(operation.Id, operation.Type, operation.Date, operation.Balance, operation.Age,
-                        operation.Input));
-                numberOfCreated++;
-                return true;
             }
-
             return false;
         }
 
@@ -275,6 +294,7 @@ namespace Part3.BusinessLogic
                 opOk = TransferAccount(operations[indice]);
             }
 
+
             return opOk;
         }
 
@@ -285,39 +305,19 @@ namespace Part3.BusinessLogic
             if (transactions[indice].Sender != 0 && transactions[indice].Receiver == 0)
             {
                 trxnOk = MakeWithdrawal(transactions[indice]);
-                //int accNumber = transactions[indice].Sender;
-                //Account account = _accounts[accNumber];
-                //int idMngr = account.IdMngr;
-                //int numberOfTrxn = _managers[idMngr].Number;
-                //_accounts[WhereIsThisAccount(accNumber, _accounts)].Addtransaction(transactions[indice], numberOfTrxn);
-
                 numberOfTransaction++;
             }
             //Deposit
             else if (transactions[indice].Sender == 0 && transactions[indice].Receiver != 0)
             {
                 trxnOk = MakeDeposit(transactions[indice]);
-                //int accNumber = transactions[indice].Receiver;
-                //Account account = _accounts[accNumber];
-                //int idMngr = account.IdMngr;
-                //int numberOfTrxn = _managers[idMngr].Number;
-                //_accounts[WhereIsThisAccount(accNumber, _accounts)].Addtransaction(transactions[indice], numberOfTrxn);
                 numberOfTransaction++;
             }
             //Transfer
             else if (transactions[indice].Sender != 0 && transactions[indice].Receiver != 0)
             {
                 trxnOk = MakeTranfer(transactions[indice]);
-                //int accSender = transactions[indice].Sender;
-                //Account accountS = _accounts[accSender];
-                //int idMngrS = accountS.IdMngr;
-                //int numberOfTrxnS = _managers[idMngrS].Number;
-                //_accounts[WhereIsThisAccount(accSender, _accounts)].Addtransaction(transactions[indice], numberOfTrxnS);
-                //int accReceiver = transactions[indice].Receiver;
-                //Account accountR = _accounts[accReceiver];
-                //int idMngrR = accountR.IdMngr;
-                //int numberOfTrxnR = _managers[idMngrR].Number;
-                //_accounts[WhereIsThisAccount(accReceiver, _accounts)].Addtransaction(transactions[indice], numberOfTrxnR);
+
                 numberOfTransaction++;
             }
 
@@ -325,7 +325,7 @@ namespace Part3.BusinessLogic
         }
 
 
-        //ECRITURE
+        //WRITTING
         public void WriteOperation(bool b, int id, StreamWriter writerOpe)
         {
             if (b)
@@ -354,28 +354,45 @@ namespace Part3.BusinessLogic
 
         public void WriteMetrologie(StreamWriter writerMetro)
         {
+            //Writting Metrologie
             writerMetro.WriteLine($"Statistiques :\n" +
                                   $"Nombre de comptes : {numberOfCreated}\n" +
                                   $"Nombre de transactions : {numberOfTransaction}\n" +
                                   $"Nombre de réussites : {numberOfOK}\n" +
                                   $"Nombre d'échecs : {numberOfKO}\n" +
-                                  $"Montant total  des réussites : {sumOfOK:C2} euros\n\n" +
+                                  $"Montant total  des réussites : {sumOfOK:C2} \n\n" +
                                   $"Frais de gestion :");
+            //Writting fees
             foreach (KeyValuePair<int, Manager> m in _managers)
             {
-                writerMetro.WriteLine($"{m.Value.Id:C2} : {m.Value.SumFees:C2} euros");
+                writerMetro.WriteLine($"{m.Value.Id} : {m.Value.SumFees:C2}");
             }
+            //Writting interest
+            writerMetro.WriteLine($"Intérêts :");
+            foreach (KeyValuePair<int, Account> a in _accounts)
+            {
+
+                a.Value.Interest = CalculInteret(a.Value);
+                a.Value.Interest = CalculInteretAnnuel(a.Value);
+                if (a.Value.Interest > 0)
+                {
+                    writerMetro.WriteLine($"{a.Value.AccountNumber} : {a.Value.Interest:C2}");
+                }
+            }
+
         }
 
 
         //VERIFICATION 
         private static bool IsAmountValid(double amount)
         {
+            //return true if the amount is above zero
             return amount > 0;
         }
 
         private bool AccountExists(int accountNumber)
         {
+            //return true if the account exist
             return _accounts.ContainsKey(accountNumber);
         }
 
@@ -500,9 +517,92 @@ namespace Part3.BusinessLogic
 
         private double CalculInteret(Account account)
         {
-            double interet = 0;
+            int yearOuv = account.DateOuv.Year;
+            int yearClo = account.DateClo.Year;
+            int monthOuv = account.DateOuv.Month;
+            int monthClo = account.DateClo.Month;
+            int dayOuv = account.DateOuv.Day;
+            int dayClo = account.DateClo.Day;
+            //double spentDays = (account.DateOuv - account.DateClo).TotalDays;
 
-            return interet;
+            int daysInMonthOuv = DateTime.DaysInMonth(yearOuv, monthOuv);
+            int daysInMonthClo = DateTime.DaysInMonth(yearClo, monthClo);
+            int daysSpentInMonthClo = daysInMonthClo - dayClo;
+            int daysSpentInMonthOuv = daysInMonthOuv - dayOuv;
+            double prorataOuv = daysSpentInMonthOuv / daysSpentInMonthOuv;
+            double prorataClo = daysSpentInMonthClo / daysSpentInMonthClo;
+            int cptmois;
+
+            if (account.Type == "L")
+            {
+                //Mois complet
+                if (dayOuv == 1 && dayClo == daysInMonthClo)
+                {
+                    int prorata = ((yearOuv - yearClo) * 12) + monthOuv - monthClo;
+
+                    for (int i = 0; i > prorata; i++)
+                    {
+                        account.Interest += account.Balance * 0.0017;
+                    }
+                }
+                //Mois pas complet donc PRORATA
+                else
+                {
+                    //Prorata ouverture (après le 1er du mois)
+                    if (dayOuv > 1)
+                    {
+                        account.Interest = (account.Balance * 0.0017) * prorataOuv;
+                    }
+                    //Prorata cloture (après le 1er du mois)
+                    else if (dayClo < daysInMonthClo)
+                    {
+                        account.Interest = (account.Balance * 0.0017) * prorataClo;
+                    }
+                }
+            }
+            return account.Interest;
         }
+        private double CalculInteretAnnuel(Account account)
+        {
+            int cptmois = 0;
+            int yearOuv = account.DateOuv.Year;
+            int yearClo = account.DateClo.Year;
+            int monthOuv = account.DateOuv.Month;
+            int monthClo = account.DateClo.Month;
+
+            int prorata = ((yearOuv - yearClo) / 12) + monthOuv - monthClo;
+            if (account.Type == "L")
+            {
+                for (int i = 0; i > prorata; i++)
+                {
+                    cptmois += 1;
+                    if (cptmois == 12)
+                    {
+                        //Réinitialisation du compteur de mois
+                        cptmois = 0;
+                        //Ajout des intérêts annuel
+                        account.Interest += account.Balance * 0.02;
+                    }
+                }
+            }
+            else if (account.Type == "T")
+            {
+                for (int i = 0; i < prorata; i++)
+                {
+                    cptmois += 1;
+
+                    if (cptmois == 12)
+                    {
+                        //Réinitialisation du compteur de mois
+                        cptmois = 0;
+                        //Ajout des intérêts annuel
+                        account.Interest += account.Balance * 0.05;
+
+                    }
+                }
+            }
+            return account.Interest;
+        }
+
     }
 }

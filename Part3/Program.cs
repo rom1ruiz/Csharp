@@ -7,6 +7,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using Part3.BusinessLogic;
+using Part3.Types;
 
 namespace Part3
 {
